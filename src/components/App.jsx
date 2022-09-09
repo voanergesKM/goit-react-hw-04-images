@@ -3,8 +3,7 @@ import { SearchBar } from 'components/Searchbar/Searchbar';
 import { SearchForm } from './SearchForm/SearchForm';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { ImageGalleryItem } from './ImageGalleryItem/ImageGalleryItem';
-import { Oval } from 'react-loader-spinner';
-import { getImages } from './services/pixabay_api';
+
 import { LoadMoreBtn } from './Button/Button';
 
 export class App extends Component {

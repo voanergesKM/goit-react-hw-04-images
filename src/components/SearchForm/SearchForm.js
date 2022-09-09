@@ -26,7 +26,6 @@ export class SearchForm extends Component {
 
   render() {
     const { searchInput } = this.state;
-    const { onSubmit } = this.props;
 
     return (
       <>
