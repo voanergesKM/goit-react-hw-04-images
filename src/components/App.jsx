@@ -3,12 +3,13 @@ import { SearchBar } from 'components/Searchbar/Searchbar';
 import { SearchForm } from './SearchForm/SearchForm';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { ImageGalleryItem } from './ImageGalleryItem/ImageGalleryItem';
+import { getImages } from './services/pixabay_api';
 
 import { LoadMoreBtn } from './Button/Button';
 
 export class App extends Component {
   state = {
-    searchQuerry: '',
+    searchQuerry: null,
     page: 1,
     images: [],
     isLoading: false,
@@ -20,10 +21,7 @@ export class App extends Component {
       prevState.searchQuerry !== this.state.searchQuerry ||
       prevState.page !== this.state.page
     ) {
-      fetch(
-        `https://pixabay.com/api/?q=${this.state.searchQuerry}&page=${this.state.page}&key=29375118-d0e787d59f493d03f13f4e7b5&image_type=photo&orientation=horizontal&per_page=12`
-      )
-        .then(res => res.json())
+      getImages(this.state.searchQuerry, this.state.page)
         .then(data =>
           this.setState(prevState => ({
             images: [...prevState.images, ...data.hits],

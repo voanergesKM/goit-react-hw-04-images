@@ -17,7 +17,7 @@ export const StyledInput = styled.input`
   font-size: 20px;
   border: none;
   outline: none;
-  padding-left: 4px;
+  padding-left: 8px;
   padding-right: 4px;
 
   ::placeholder {
