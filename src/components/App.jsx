@@ -1,13 +1,12 @@
 import { Component } from 'react';
 import { RotatingLines } from 'react-loader-spinner';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { SearchBar } from 'components/Searchbar/Searchbar';
 import { SearchForm } from './SearchForm/SearchForm';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { ImageGalleryItem } from './ImageGalleryItem/ImageGalleryItem';
 import { getImages } from './services/pixabay_api';
-
 import { LoadMoreBtn } from './Button/Button';
 import { LoaderWrapper } from './Loader/Loader.styled';
 
@@ -26,13 +25,20 @@ export class App extends Component {
       prevState.page !== this.state.page
     ) {
       getImages(this.state.searchQuerry, this.state.page)
-        .then(data =>
+        .then(data => {
+          if (data.total === 0) {
+            this.setState({ isLoading: false });
+            return toast.info('Sorry, nothing was found for your search');
+          }
           this.setState(prevState => ({
             images: [...prevState.images, ...data.hits],
             isLoading: false,
-          }))
-        )
-        .catch(error => this.setState({ error }));
+          }));
+        })
+        .catch(error => {
+          console.log(error);
+          this.setState({ error });
+        });
     }
   }
 
