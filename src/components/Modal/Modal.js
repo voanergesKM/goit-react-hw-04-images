@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { createPortal } from 'react-dom';
+import PropTypes from 'prop-types';
 import { Backdrop, StyledModal } from './Modal.styled';
 
 const modalRoot = document.querySelector('#modal-root');
@@ -26,11 +27,16 @@ export class Modal extends Component {
   };
 
   render() {
+    const { children } = this.props;
     return createPortal(
       <Backdrop onClick={this.handleBackdropClick}>
-        <StyledModal>{this.props.children}</StyledModal>
+        <StyledModal>{children}</StyledModal>
       </Backdrop>,
       modalRoot
     );
   }
 }
+
+Modal.propTypes = {
+  children: PropTypes.node.isRequired,
+};

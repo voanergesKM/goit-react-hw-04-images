@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import { Modal } from 'components/Modal/Modal';
 import {
@@ -12,8 +13,8 @@ export class ImageGalleryItem extends Component {
   };
 
   handleToggleModal = () => {
-    this.setState(prev => ({
-      isModalOpen: !prev.isModalOpen,
+    this.setState(({ isModalOpen }) => ({
+      isModalOpen: !isModalOpen,
     }));
   };
 
@@ -24,13 +25,14 @@ export class ImageGalleryItem extends Component {
   };
 
   render() {
+    const { isModalOpen } = this.state;
     const { image } = this.props;
     return (
       <>
         <StyledGalleryItem onClick={this.handleToggleModal}>
           <StyledGalleryImage src={image.webformatURL} alt={image.tags} />
         </StyledGalleryItem>
-        {this.state.isModalOpen && (
+        {isModalOpen && (
           <Modal onClose={this.handleToggleModal}>
             <img src={image.largeImageURL} alt={image.tags} />
           </Modal>
@@ -39,3 +41,7 @@ export class ImageGalleryItem extends Component {
     );
   }
 }
+
+ImageGalleryItem.propTypes = {
+  image: PropTypes.object.isRequired,
+};

@@ -20,11 +20,10 @@ export class App extends Component {
   };
 
   componentDidUpdate(_, prevState) {
-    if (
-      prevState.searchQuerry !== this.state.searchQuerry ||
-      prevState.page !== this.state.page
-    ) {
-      getImages(this.state.searchQuerry, this.state.page)
+    const { searchQuerry, page } = this.state;
+
+    if (prevState.searchQuerry !== searchQuerry || prevState.page !== page) {
+      getImages(searchQuerry, page)
         .then(data => {
           if (data.total === 0) {
             this.setState({ isLoading: false });
@@ -59,22 +58,21 @@ export class App extends Component {
   };
 
   render() {
+    const { isLoading, images } = this.state;
+
     return (
       <>
         <SearchBar>
-          <SearchForm
-            onSubmit={this.handleSubmit}
-            isLoading={this.state.isLoading}
-          />
+          <SearchForm onSubmit={this.handleSubmit} isLoading={isLoading} />
         </SearchBar>
-        {this.state.images.length > 0 && (
+        {images.length > 0 && (
           <ImageGallery>
-            {this.state.images.map(image => (
+            {images.map(image => (
               <ImageGalleryItem key={image.id} image={image} />
             ))}
           </ImageGallery>
         )}
-        {this.state.isLoading && (
+        {isLoading && (
           <LoaderWrapper>
             <RotatingLines
               strokeColor="#303f9f"
@@ -85,7 +83,7 @@ export class App extends Component {
             />
           </LoaderWrapper>
         )}
-        {this.state.images.length > 0 && !this.state.isLoading && (
+        {images.length > 0 && !isLoading && (
           <LoadMoreBtn text="Load More" onClick={this.handleMoreSearch} />
         )}
         <ToastContainer

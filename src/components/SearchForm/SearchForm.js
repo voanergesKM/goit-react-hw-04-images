@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import { FaSearch } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { StyledForm, StyledInput } from './SearchForm.styled';
@@ -16,9 +17,10 @@ export class SearchForm extends Component {
   };
 
   handleSubmit = evt => {
+    const { searchInput } = this.state;
     evt.preventDefault();
 
-    if (this.state.searchInput.trim() === '') {
+    if (searchInput.trim() === '') {
       toast.info('Please, enter your search term', {
         position: 'top-right',
         autoClose: 3000,
@@ -31,7 +33,7 @@ export class SearchForm extends Component {
       return;
     }
 
-    this.props.onSubmit(this.state.searchInput.trim());
+    this.props.onSubmit(searchInput.trim());
 
     this.setState({
       searchInput: '',
@@ -40,6 +42,7 @@ export class SearchForm extends Component {
 
   render() {
     const { searchInput } = this.state;
+    const { isLoading } = this.props;
 
     return (
       <>
@@ -49,7 +52,7 @@ export class SearchForm extends Component {
             value={searchInput}
           ></StyledInput>
           <IconButton
-            isLoading={this.props.isLoading}
+            isLoading={isLoading}
             type="submit"
             aria-label="Search button"
             icon={<FaSearch size={24} />}
@@ -59,3 +62,7 @@ export class SearchForm extends Component {
     );
   }
 }
+
+SearchForm.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+};

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { StyledIconButton } from './IconButton.styled';
 
 export const IconButton = ({ children, icon, onClick, isLoading }) => {
@@ -7,4 +8,10 @@ export const IconButton = ({ children, icon, onClick, isLoading }) => {
       {children}
     </StyledIconButton>
   );
+};
+
+IconButton.propTypes = {
+  icon: PropTypes.node,
+  onclick: PropTypes.func,
+  isLoading: PropTypes.bool,
 };
