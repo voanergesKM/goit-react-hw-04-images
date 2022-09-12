@@ -2,7 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FaSearch } from 'react-icons/fa';
 import { toast } from 'react-toastify';
-import { StyledForm, StyledInput } from './SearchForm.styled';
+import { StyledForm, StyledInput, Styledlabel } from './SearchForm.styled';
 import { IconButton } from 'components/IconButton/IconButton';
 
 export class SearchForm extends Component {
@@ -47,9 +47,12 @@ export class SearchForm extends Component {
     return (
       <>
         <StyledForm onSubmit={this.handleSubmit}>
+          <Styledlabel htmlFor="search">Search</Styledlabel>
           <StyledInput
             onChange={this.handleInputChange}
             value={searchInput}
+            name="search"
+            autoComplete="off"
           ></StyledInput>
           <IconButton
             isLoading={isLoading}

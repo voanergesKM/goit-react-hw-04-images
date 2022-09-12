@@ -5,6 +5,7 @@ import { Modal } from 'components/Modal/Modal';
 import {
   StyledGalleryImage,
   StyledGalleryItem,
+  ModalImage,
 } from './ImageGalleryItem.styled';
 
 export class ImageGalleryItem extends Component {
@@ -34,7 +35,7 @@ export class ImageGalleryItem extends Component {
         </StyledGalleryItem>
         {isModalOpen && (
           <Modal onClose={this.handleToggleModal}>
-            <img src={image.largeImageURL} alt={image.tags} />
+            <ModalImage src={image.largeImageURL} alt={image.tags} />
           </Modal>
         )}
       </>

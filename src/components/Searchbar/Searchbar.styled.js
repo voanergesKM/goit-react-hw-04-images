@@ -8,7 +8,7 @@ export const StyledBar = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 64px;
+  /* min-height: 64px; */
   padding-right: 24px;
   padding-left: 24px;
   padding-top: 12px;

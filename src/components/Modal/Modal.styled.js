@@ -14,8 +14,5 @@ export const Backdrop = styled.div`
 `;
 
 export const StyledModal = styled.div`
-  /* display: flex; */
-
-  max-width: calc(100vw - 48px);
-  max-height: calc(100vh - 24px);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px;
 `;
