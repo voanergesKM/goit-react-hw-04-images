@@ -1,23 +1,18 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FaSearch } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { StyledForm, StyledInput, Styledlabel } from './SearchForm.styled';
 import { IconButton } from 'components/IconButton/IconButton';
 
-export class SearchForm extends Component {
-  state = {
-    searchInput: '',
+export const SearchForm = ({ isLoading, onSubmit }) => {
+  const [searchInput, setSearchInput] = useState('');
+
+  const handleInputChange = evt => {
+    setSearchInput(evt.currentTarget.value);
   };
 
-  handleInputChange = evt => {
-    this.setState({
-      searchInput: evt.currentTarget.value,
-    });
-  };
-
-  handleSubmit = evt => {
-    const { searchInput } = this.state;
+  const handleSubmit = evt => {
     evt.preventDefault();
 
     if (searchInput.trim() === '') {
@@ -33,38 +28,31 @@ export class SearchForm extends Component {
       return;
     }
 
-    this.props.onSubmit(searchInput.trim());
+    onSubmit(searchInput.trim());
 
-    this.setState({
-      searchInput: '',
-    });
+    setSearchInput('');
   };
 
-  render() {
-    const { searchInput } = this.state;
-    const { isLoading } = this.props;
-
-    return (
-      <>
-        <StyledForm onSubmit={this.handleSubmit}>
-          <Styledlabel htmlFor="search">Search</Styledlabel>
-          <StyledInput
-            onChange={this.handleInputChange}
-            value={searchInput}
-            name="search"
-            autoComplete="off"
-          ></StyledInput>
-          <IconButton
-            isLoading={isLoading}
-            type="submit"
-            aria-label="Search button"
-            icon={<FaSearch size={24} />}
-          ></IconButton>
-        </StyledForm>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <StyledForm onSubmit={handleSubmit}>
+        <Styledlabel htmlFor="search">Search</Styledlabel>
+        <StyledInput
+          onChange={handleInputChange}
+          value={searchInput}
+          name="search"
+          autoComplete="off"
+        ></StyledInput>
+        <IconButton
+          isLoading={isLoading}
+          type="submit"
+          aria-label="Search button"
+          icon={<FaSearch size={24} />}
+        ></IconButton>
+      </StyledForm>
+    </>
+  );
+};
 
 SearchForm.propTypes = {
   isLoading: PropTypes.bool.isRequired,
