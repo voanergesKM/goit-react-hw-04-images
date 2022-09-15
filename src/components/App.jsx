@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { RotatingLines } from 'react-loader-spinner';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,94 +10,85 @@ import { getImages } from './services/pixabay_api';
 import { LoadMoreBtn } from './Button/Button';
 import { LoaderWrapper } from './Loader/Loader.styled';
 
-export class App extends Component {
-  state = {
-    searchQuerry: null,
-    page: 1,
-    images: [],
-    isLoading: false,
-    error: null,
-  };
+export const App = () => {
+  const [searchQuerry, setSearchQuerry] = useState('');
+  const [page, setPage] = useState(1);
+  const [images, setImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  componentDidUpdate(_, prevState) {
-    const { searchQuerry, page } = this.state;
-
-    if (prevState.searchQuerry !== searchQuerry || prevState.page !== page) {
+  useEffect(() => {
+    if (!searchQuerry) {
+      return;
+    } else {
       getImages(searchQuerry, page)
         .then(data => {
           if (data.total === 0) {
-            this.setState({ isLoading: false });
+            setIsLoading(false);
             return toast.info('Sorry, nothing was found for your search');
           }
-          this.setState(prevState => ({
-            images: [...prevState.images, ...data.hits],
-            isLoading: false,
-          }));
+
+          setImages(images => [...images, ...data.hits]);
+
+          setIsLoading(false);
         })
         .catch(error => {
           console.log(error);
-          this.setState({ error });
+          setError(error);
         });
     }
-  }
+  }, [searchQuerry, page]);
 
-  handleSubmit = searchQuerry => {
-    this.setState({
-      searchQuerry,
-      page: 1,
-      images: [],
-      isLoading: true,
-    });
+  const handleSubmit = searchQuerry => {
+    setSearchQuerry(searchQuerry);
+    setPage(1);
+    setImages([]);
+    setIsLoading(true);
   };
 
-  handleMoreSearch = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-      isLoading: true,
-    }));
+  const handleMoreSearch = () => {
+    setPage(page => page + 1);
+    setIsLoading(true);
   };
 
-  render() {
-    const { isLoading, images } = this.state;
-
-    return (
-      <>
-        <SearchBar>
-          <SearchForm onSubmit={this.handleSubmit} isLoading={isLoading} />
-        </SearchBar>
-        {images.length > 0 && (
-          <ImageGallery>
-            {images.map(image => (
-              <ImageGalleryItem key={image.id} image={image} />
-            ))}
-          </ImageGallery>
-        )}
-        {isLoading && (
-          <LoaderWrapper>
-            <RotatingLines
-              strokeColor="#303f9f"
-              strokeWidth="5"
-              animationDuration="0.75"
-              width="96"
-              visible={true}
-            />
-          </LoaderWrapper>
-        )}
-        {images.length > 0 && !isLoading && (
-          <LoadMoreBtn text="Load More" onClick={this.handleMoreSearch} />
-        )}
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <SearchBar>
+        <SearchForm onSubmit={handleSubmit} isLoading={isLoading} />
+      </SearchBar>
+      {error && <p>Ups! Something went wrong!</p>}
+      {images.length > 0 && (
+        <ImageGallery>
+          {images.map(image => (
+            <ImageGalleryItem key={image.id} image={image} />
+          ))}
+        </ImageGallery>
+      )}
+      {isLoading && (
+        <LoaderWrapper>
+          <RotatingLines
+            strokeColor="#303f9f"
+            strokeWidth="5"
+            animationDuration="0.75"
+            width="96"
+            visible={true}
+          />
+        </LoaderWrapper>
+      )}
+      {images.length > 0 && !isLoading && (
+        <LoadMoreBtn text="Load More" onClick={handleMoreSearch} />
+      )}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </>
+  );
+};
