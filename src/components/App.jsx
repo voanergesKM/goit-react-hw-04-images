@@ -8,7 +8,7 @@ import { ImageGallery } from './ImageGallery/ImageGallery';
 import { ImageGalleryItem } from './ImageGalleryItem/ImageGalleryItem';
 import { getImages } from './services/pixabay_api';
 import { LoadMoreBtn } from './Button/Button';
-import { LoaderWrapper } from './Loader/Loader.styled';
+import { Box } from './Box';
 
 export const App = () => {
   const [searchQuerry, setSearchQuerry] = useState('');
@@ -65,7 +65,7 @@ export const App = () => {
         </ImageGallery>
       )}
       {isLoading && (
-        <LoaderWrapper>
+        <Box display="flex" mt="20px" justifyContent="center">
           <RotatingLines
             strokeColor="#303f9f"
             strokeWidth="5"
@@ -73,7 +73,7 @@ export const App = () => {
             width="96"
             visible={true}
           />
-        </LoaderWrapper>
+        </Box>
       )}
       {images.length > 0 && !isLoading && (
         <LoadMoreBtn text="Load More" onClick={handleMoreSearch} />
