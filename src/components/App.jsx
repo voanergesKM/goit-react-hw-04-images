@@ -16,6 +16,7 @@ export const App = () => {
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isMoreBtnHide, setIsMoreBtnHide] = useState(false);
 
   useEffect(() => {
     if (!searchQuerry) {
@@ -23,6 +24,10 @@ export const App = () => {
     } else {
       getImages(searchQuerry, page)
         .then(data => {
+          if (data.hits.length < 12) {
+            setIsMoreBtnHide(true);
+          }
+
           if (data.total === 0) {
             setIsLoading(false);
             return toast.info('Sorry, nothing was found for your search');
@@ -44,6 +49,7 @@ export const App = () => {
     setPage(1);
     setImages([]);
     setIsLoading(true);
+    setIsMoreBtnHide(false);
   };
 
   const handleMoreSearch = () => {
@@ -54,7 +60,11 @@ export const App = () => {
   return (
     <>
       <SearchBar>
-        <SearchForm onSubmit={handleSubmit} isLoading={isLoading} />
+        <SearchForm
+          onSubmit={handleSubmit}
+          isLoading={isLoading}
+          searchQuerry={searchQuerry}
+        />
       </SearchBar>
       {error && <p>Ups! Something went wrong!</p>}
       {images.length > 0 && (
@@ -75,7 +85,7 @@ export const App = () => {
           />
         </Box>
       )}
-      {images.length > 0 && !isLoading && (
+      {images.length > 0 && !isLoading && !isMoreBtnHide && (
         <LoadMoreBtn text="Load More" onClick={handleMoreSearch} />
       )}
       <ToastContainer

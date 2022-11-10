@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { StyledForm, StyledInput, Styledlabel } from './SearchForm.styled';
 import { IconButton } from 'components/IconButton/IconButton';
 
-export const SearchForm = ({ isLoading, onSubmit }) => {
+export const SearchForm = ({ isLoading, onSubmit, searchQuerry }) => {
   const [searchInput, setSearchInput] = useState('');
 
   const handleInputChange = evt => {
@@ -25,6 +25,22 @@ export const SearchForm = ({ isLoading, onSubmit }) => {
         draggable: true,
         progress: undefined,
       });
+      return;
+    }
+
+    if (searchQuerry === searchInput.trim()) {
+      toast.info(
+        `The images you requested ${searchQuerry} have already been found and displayed`,
+        {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      );
       return;
     }
 
@@ -56,4 +72,6 @@ export const SearchForm = ({ isLoading, onSubmit }) => {
 
 SearchForm.propTypes = {
   isLoading: PropTypes.bool.isRequired,
+  onSubmit: PropTypes.func,
+  searchQuerry: PropTypes.string.isRequired,
 };
