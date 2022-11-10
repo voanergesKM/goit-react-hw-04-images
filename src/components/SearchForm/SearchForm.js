@@ -41,6 +41,8 @@ export const SearchForm = ({ isLoading, onSubmit, searchQuerry }) => {
           progress: undefined,
         }
       );
+      setSearchInput('');
+
       return;
     }
 
